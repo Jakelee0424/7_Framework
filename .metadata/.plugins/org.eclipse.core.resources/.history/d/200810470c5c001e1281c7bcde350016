@@ -1,0 +1,57 @@
+package edu.kh.project.member.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@Controller // 요청/응답 클래스 + bean 등록(Spring이 관리하는 객체)
+@RequestMapping("/member") // 공통된 주소 앞부분 작성, member로 시작하는 요청은 해당 컨트롤러에서 처리
+public class MemberController {
+
+	// 로그인 : /member/login
+	// 로그아웃 : /member/logout
+	
+	// @RequestMapping(value="/login", method=RequestMethod.POST)
+	
+	// @RequestMapping : 요청 주소에 맞는 클래스/메서드 연결
+	// @RequestMapping("요청주소") -> get/post 구분 X, but post쓸 떈 구분하는 것이 좋음
+	
+	
+//	@RequestMapping(value="/login", method=RequestMethod.POST) // 기본이 get(생략가능)
+	public String login(HttpServletRequest req) {
+		
+		// 파라미터 전달 방법 1 : HttpServletRequest 
+		
+		// -> Controller 메서드에 매개변수로 HttpServletRequest를 작성
+		
+		// 매개변수로 사용가능한 이유
+		// spring에서 제공하는 Argument Resolver(매개변수해결사)가 자동이로 대입 & 해결
+		
+		String inputEmail = req.getParameter("inputEmail");
+		String inputPw = req.getParameter("inputPw");
+		
+		System.out.println("inputEmail : " + inputEmail);
+		System.out.println("inputPw : " + inputPw);
+
+		// redirect 방법
+		// "redirect : 요청주소"
+		
+		return "redirect:/";
+		
+	}
+	
+	// @PostMapping : @RequestMapping의 자식 -> post 방식 요청을 연결하는 어노테이션
+	@PostMapping("/login")
+	public String login() {
+		
+		// 파라미터 전달 방법 2 :
+		
+		
+		return "redirect:/";
+		
+	}
+	
+}
