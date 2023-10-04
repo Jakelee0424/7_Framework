@@ -21,6 +21,10 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	
+	<!--  base-package 밑에 어노테이션을 찾아 Bean으로 만듦 
+	
+	@Component와 자식 어노테이션 @Controller, @Service, @Repository 클래스를 찾아 Bean으로 등록	-->
 	<context:component-scan base-package="edu.kh.project" />
 	
 	

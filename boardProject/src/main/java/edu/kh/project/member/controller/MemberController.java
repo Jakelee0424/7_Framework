@@ -1,20 +1,35 @@
 package edu.kh.project.member.controller;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.member.model.dto.Member;
+import edu.kh.project.member.model.service.MemberService;
 
 @Controller // 요청/응답 클래스 + bean 등록(Spring이 관리하는 객체)
 @RequestMapping("/member") // 공통된 주소 앞부분 작성, member로 시작하는 요청은 해당 컨트롤러에서 처리
+@SessionAttributes({"loginMember"}) // Model의 키값 작성하면 session으로 추가 
 public class MemberController {
 
+	@Autowired // MemberService를 구현한 MemberServiceImpl의 Bean 주입
+	private MemberService service;
+	
+	
 	// 로그인 : /member/login
 	// 로그아웃 : /member/logout
 	
@@ -80,7 +95,7 @@ public class MemberController {
 		
 	}
 	
-	@PostMapping("/login")
+//	@PostMapping("/login")
 	public String login(@ModelAttribute Member inputMember){
 		
 		// 파라미터 전달 방법 3 : @ModelAttribute 이용
@@ -102,5 +117,137 @@ public class MemberController {
 		
 	}
 	
+	// 찐탱이
+	@PostMapping("/login")
+	public String login(Member inputMember, Model model,
+						@RequestHeader(value = "referer") String referer, // value 생략가능
+						RedirectAttributes ra,
+						@RequestParam(value = "saveId", required = false) String saveId,
+						HttpServletResponse resp
+			) {
+		
+	// @RequestHeader(value="referer) String referer
+		// -> 요청 HTTP header에서 "referer" (이전주소) 값을 얻어와
+		// 매개변수 String referer에 저장
+		
+	// Model : 데이터 전달용 객체
+		// -> 데이터를 K : V 형태로 담아 전달
+		// -> 기본적으로 request scope
+		// -> @SessionAttributes 어노테이션과 함께 사용시 Session scope로 사용 가능
+		
+	// @RequestParam(value="saveId", required=false) String saveId
+		// -> name 속성값이 saveId인 파라미터를 전달받아서 저장
+		// required 미작성 시 기본 값 ture -> 오류
+		// required = false -> null 허용 
+		
+		// 로그인 서비스 호출
+		Member loginMember = service.login(inputMember);
+		
+		// DB 조회 결과 확인
+		// System.out.println(loginMember);
+		
+		
+		// 로그인 결과에 따라 redirect 경로를 다르게 저장
+		
+		String path = "redirect:";
+		
+		
+		if(loginMember != null) { // 로그인 성공
+
+			// 메인페이지로 redirect
+			path += "/";
+
+			// session에 loginMember 추가
+			
+			// Servlet -> HttpSession.setAttribute("키", "밸류")
+			// Spring -> Model + @SessionAttributes
+			
+			// 1) model에 로그인한 회원정보 추가
+			model.addAttribute("loginMember", loginMember); // -> 현재는 request scope
+			
+			// 2) 클래스 위에 어노테이션(@SessionAttributes) 추가
+			// -> 현재는 session scope
+			
+//------------------------------------------------------------------------------------
+			// 아이디 저장(Cookie)
+			
+			/*
+			 * cookie란 
+			 * -> 클라이언트 측(브라우저)에서 관리하는 파일
+			 * 
+			 * - 쿠키파일에 등록된 주소 요청 시 마다
+			 * 	 자동으로 요청에 첨부되어 서버로 전달됨 
+			 * 
+			 * - 서버로 전달된 쿠키에
+			 * 	 값 추가, 수정, 삭제 등을 진행한 후, 다시 클라이언트에 반환
+			 * 
+			 * */
+			
+			// 쿠키 생성(해당 쿠키에 담을 데이터를 K:V형태로 지정)
+			Cookie cookie = new Cookie("saveId", loginMember.getMemberEmail());
+			
+			if(saveId != null) { // 아이디 저장이 체크되었을 때
+				
+				// 한 달(30일) 간 유지되는 쿠키 생성
+				cookie.setMaxAge(60*60*24*30);
+				
+				
+			}else { // 아이디 저장이 체크안되었을 때
+			
+				// 0초 동안 유지되는 쿠키 생성 -> 기존에 존재하던 쿠키 삭제
+				cookie.setMaxAge(0);
+
+			}
+			
+			// 클라이언트가 어떤 요청을 할 때 쿠키가 첨부될지 경로 지정
+			cookie.setPath("/"); // localhost:/ 이하 모든 주소, 모든 요청에 쿠키 첨부
+			
+			// 응답 객체(HttpServletResponse)를 이용하여 클라이언트로 전달
+			resp.addCookie(cookie);
+			
+			
+		} else { // 로그인 실패
+
+			// 이전 페이지로
+			path += referer;
+
+			// 로그인 실패 메세지 추가
+
+			/*
+			 * redirect(재요청)시
+			 * 기존 요청(request)이 사라지고
+			 * 새로운 요청(request)을 만들게 되어
+			 * redirect된 페이지에서는 이전 요청이 유지되지 않는다
+			 * -> 유지하고 싶으면 어쩔 수 없이 session scope를 이용
+			 * 
+			 * RedirectAttributes를 스프링에서 재공 -> redirect시 데이터를 request scope로 전달할 수 있게 하는 객체
+			 * 
+			 * 
+			 * 응답 전 : request scope
+			 * 응답 중 : session scope로 이동
+			 * 응답 후 : request scope로 복귀
+			 * 
+			 * 
+			 * */
+			
+			//addFlashAttribute : 잠시 session에 추가
+			ra.addFlashAttribute("msg", "아이디 또는 비밀번호 불일치");
+		}
+		
+		
+		return path;
+	}
+	
+	@GetMapping("/logout")
+	public String logout(SessionStatus status /*HttpSession session*/) {
+		
+		// SessionStatus : 세션 상태 관리 객체
+		
+		status.setComplete();
+		
+		//session.invalidate(); // 세선 무효화		
+		
+		return "redirect:/";
+	}
 	
 }

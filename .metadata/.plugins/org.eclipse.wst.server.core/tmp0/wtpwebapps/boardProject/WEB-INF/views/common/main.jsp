@@ -47,7 +47,7 @@
 
 						<%-- 로그인 안되었을때 --%>
 						<%-- EL empty : 비어있거나 null --%>
-						<c:when test="${empty sessionScope.member}">
+						<c:when test="${empty sessionScope.loginMember}">
 
 
 							<form action="/member/login" name="login-form" id="loginFrm" method="post">
@@ -55,7 +55,10 @@
 								<fieldset class="id-pw-area">
 		
 									<section>
-										<input type="text" name="memberEmail" placeholder="이메일">
+										<input type="text" name="memberEmail" placeholder="이메일"
+											autocomplete="off"
+											value="${cookie.saveId.value}"
+											>										
 										<input type="password" name="memberPw" placeholder="비밀번호">
 									</section>
 		
@@ -66,7 +69,16 @@
 								</fieldset>
 		
 								<label for="saveId">
-									<input type="checkbox" name="saveId">아이디 저장
+									<c:if test="${not empty cookie.saveId.value}">
+										<%-- 쿠키에 저장된 이메이이 있으면 변수 선언 
+											-> page scope
+										--%>
+										
+										<c:set var="save" value="checked"/>
+										
+									</c:if>
+								
+									<input type="checkbox" name="saveId" ${save}>아이디 저장
 								</label>
 		
 								<section class="signup-find-area">
@@ -91,7 +103,7 @@
 
 								<div class="my-info">
 									<div>
-										<a href="#" id="nickname">${session.member.memberNickname}</a>
+										<a href="#" id="nickname">${sessionScope.loginMember.memberNickname}</a>
 										<a href="/member/logout" id="logoutBtn">로그아웃</a>
 									</div>
 
