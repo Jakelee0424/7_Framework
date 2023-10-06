@@ -35,9 +35,23 @@
 				<section class="content-1">
 
 					<h3>로그인된 회원 정보</h3>
+						${sessionScope.loginMember} 
 
+					<h3>닉네임이 일치하는 회원의 전화번호 조회</h3>
 
+					<input type="text" id="inputNickname">
+					<button id="btn1">조회</button>
+					<h4 id="result1"></h4>
 
+					<hr>
+
+					<h3>이메일을 입력받아 일치하는 회원의 정보를 조회</h3>
+					<input id="inputEmail">
+					<button id="btn2">조회</button>
+					<ul id="result2">
+						
+
+					</ul>
 
 				</section>
 
@@ -47,7 +61,7 @@
 
 						<%-- 로그인 안되었을때 --%>
 						<%-- EL empty : 비어있거나 null --%>
-						<c:when test="${empty sessionScope.member}">
+						<c:when test="${empty sessionScope.loginMember}">
 
 
 							<form action="/member/login" name="login-form" id="loginFrm" method="post">
@@ -55,7 +69,10 @@
 								<fieldset class="id-pw-area">
 		
 									<section>
-										<input type="text" name="memberEmail" placeholder="이메일">
+										<input type="text" name="memberEmail" placeholder="이메일"
+											autocomplete="off"
+											value="${cookie.saveId.value}"
+											>										
 										<input type="password" name="memberPw" placeholder="비밀번호">
 									</section>
 		
@@ -66,7 +83,16 @@
 								</fieldset>
 		
 								<label for="saveId">
-									<input type="checkbox" name="saveId">아이디 저장
+									<c:if test="${not empty cookie.saveId.value}">
+										<%-- 쿠키에 저장된 이메이이 있으면 변수 선언 
+											-> page scope
+										--%>
+										
+										<c:set var="save" value="checked"/>
+										
+									</c:if>
+								
+									<input type="checkbox" name="saveId" ${save}>아이디 저장
 								</label>
 		
 								<section class="signup-find-area">
@@ -91,7 +117,7 @@
 
 								<div class="my-info">
 									<div>
-										<a href="#" id="nickname">${session.member.memberNickname}</a>
+										<a href="#" id="nickname">${sessionScope.loginMember.memberNickname}</a>
 										<a href="/member/logout" id="logoutBtn">로그아웃</a>
 									</div>
 
@@ -114,6 +140,7 @@
 
 		</main>
 
+		<script src="/resources/js/main.js"></script>
 	</body>
 
 	</html>

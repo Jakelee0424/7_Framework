@@ -64,6 +64,8 @@
 
 	</bean>
 	
+	<bean id="jsonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+	
 	<!--
 		트랜잭션 처리 시 @Transantional 어노테이션 사용할 예정 
 		해당 어노테이션을 인식하라는 설정 필요

@@ -1,5 +1,7 @@
 package edu.kh.project.member.controller;
 
+import java.sql.SQLException;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -118,6 +121,15 @@ public class MemberController {
 	}
 	
 	// 찐탱이
+	/** 로그인
+	 * @param inputMember
+	 * @param model
+	 * @param referer
+	 * @param ra
+	 * @param saveId
+	 * @param resp
+	 * @return
+	 */
 	@PostMapping("/login")
 	public String login(Member inputMember, Model model,
 						@RequestHeader(value = "referer") String referer, // value 생략가능
@@ -238,6 +250,10 @@ public class MemberController {
 		return path;
 	}
 	
+	/** 로그아웃
+	 * @param status
+	 * @return
+	 */
 	@GetMapping("/logout")
 	public String logout(SessionStatus status /*HttpSession session*/) {
 		
@@ -249,5 +265,43 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
+	
+	/** 회원가입 페이지 이동
+	 * @return
+	 */
+	@GetMapping("/signUp")
+	public String signUp() {
+		
+		return "member/signUp";
+	}
+	
+	
+	/*
+	 * 스프링의 예외 처리방법 (3종류, 중복 사용 가능)
+	 * 
+	 * 1순위 : 메서드 단위로 처리 -> try, catch / throws
+	 * 
+	 * 2순위 : 클래스 단위로 처리 -> @ExceptionHandler
+	 * 
+	 * 3순위 : 프로그램 단위(전역) -> @ControllerAdvice
+	 * 
+	 * */
+	
+	// 현재 클래스에서 발생하는 모든 예외를 모아서 처리
+//	@ExceptionHandler(Exception.class)
+	public String exceptionHandler(Exception e, Model model) {
+								// Exception e : 예외 정보를 담고 있는 객체
+								// Model model : 데이터 전달용 객체(request scope)
+		
+		e.printStackTrace(); // 예외 내용/발생 메서드 확인
+		
+		model.addAttribute("e", e); // 예외 발생시 forward되는 페이지로 e를 전달(request scope만으로 충분 -> session) 
+		
+		// viewResolver에 의해 페이지 이동 	
+		return "common/error";
+	}
+	
+	
+	
 	
 }

@@ -1,6 +1,7 @@
 package edu.kh.project.member.model.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.kh.project.member.model.dao.MemberDAO;
@@ -17,17 +18,43 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Autowired // 자동 연결
 	private MemberDAO dao; // DI
-	
+
+	@Autowired // bean으로 등록된 객체 중 타입이 일치하는 객체를 DI
+	private BCryptPasswordEncoder bcrypt;
+
+
 	/** 로그인 서비스
 	 *
 	 */
 	@Override
 	public Member login(Member inputMember) {
 		
+//		System.out.println("암호화 확인:" + bcrypt.encode( inputMember.getMemberPw() ));
+//		System.out.println("암호화 확인:" + bcrypt.encode( inputMember.getMemberPw() ));
+//		System.out.println("암호화 확인:" + bcrypt.encode( inputMember.getMemberPw() ));
+//		System.out.println("암호화 확인:" + bcrypt.encode( inputMember.getMemberPw() ));
+//		System.out.println("암호화 확인:" + bcrypt.encode( inputMember.getMemberPw() ));
+		
+		
 		// dao 호출
 		
 		Member loginMember = dao.login(inputMember);
 		
+		if(loginMember != null) {
+			
+			// 입력한 pw, 암호화된 pw 같은지 확인
+			if (bcrypt.matches(inputMember.getMemberPw(), loginMember.getMemberPw())) {
+				
+				// 비밀번호를 유지하지 않기 위해 로그인 정보에서 제거(세션에서 암호 정보 제거(암호화된 비밀번호도 지워야함))
+				loginMember.setMemberPw(null);
+				
+			} else {
+
+				loginMember = null;
+			
+			}
+			
+		}
 		
 		return loginMember;
 	}
