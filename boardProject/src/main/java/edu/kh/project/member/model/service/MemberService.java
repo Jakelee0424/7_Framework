@@ -15,5 +15,11 @@ import edu.kh.project.member.model.dto.Member;
 public interface MemberService {
 
 	Member login(Member inputMember);
+
+	int signUp(Member inputMember);
+
+	
+
+
 	
 }

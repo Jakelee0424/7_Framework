@@ -35,8 +35,10 @@
 				<section class="content-1">
 
 					<h3>로그인된 회원 정보</h3>
-						${sessionScope.loginMember} 
-
+						이메일: ${sessionScope.loginMember.memberEmail} <br>
+						닉네임: ${sessionScope.loginMember.memberNickname} <br>
+						전화번호: ${sessionScope.loginMember.memberTel} <br>
+						<br>
 					<h3>닉네임이 일치하는 회원의 전화번호 조회</h3>
 
 					<input type="text" id="inputNickname">
@@ -111,13 +113,25 @@
 							
 							<article class="login-area">
 							
-								<a href="#">
-									<img src="/resources/images/user.png" id="memberProfile" alt="">
+								<a href="/myPage/profile">
+							
+									<c:if test="${empty loginMember.profileImage}">
+
+									<img src="/resources/images/user.png" id="memberProfile">
+
+								</c:if>
+
+								<c:if test="${not empty loginMember.profileImage}">
+
+									<img src="${loginMember.profileImage}" id="memberProfile">
+
+								</c:if>
+							
 								</a>
 
 								<div class="my-info">
 									<div>
-										<a href="#" id="nickname">${sessionScope.loginMember.memberNickname}</a>
+										<a href="/myPage/info" id="nickname">${sessionScope.loginMember.memberNickname}</a>
 										<a href="/member/logout" id="logoutBtn">로그아웃</a>
 									</div>
 

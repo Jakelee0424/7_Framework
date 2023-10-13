@@ -14,10 +14,9 @@ public class MemberDAO {
 	// + Mybatis 영속성 프레인워크를 이용하려면 
 	// Connection을 이용해서 만들어진 객체인 sqlSessionTemplate 사용
 	
-	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-
+	
 	/** 로그인 DAO
 	 * @param inputMember
 	 * @return
@@ -33,5 +32,13 @@ public class MemberDAO {
 		
 		return loginMember;
 	}
-	
+
+	/** 회원가입 DAO
+	 * @param inputMember
+	 * @return
+	 */
+	public int signUp(Member inputMember) {
+
+		return sqlSession.insert("memberMapper.signUp", inputMember);
+	}
 }

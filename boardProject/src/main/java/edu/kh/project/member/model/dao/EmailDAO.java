@@ -18,16 +18,13 @@ public class EmailDAO {
 		return sqlSession.update("emailMapper.updateAuthKey", map);
 	}
 
-
 	public int insertAuthKey(Map<String, String> map) {
 		
 		return sqlSession.insert("emailMapper.insertAuthKey", map);
 	}
 
-
 	public int checkAuthKey(Map<String, String> map) {
 
-		
 		return sqlSession.selectOne("emailMapper.checkAuthKey", map);
 	}
 

@@ -466,8 +466,6 @@ checkAuthKeyBtn.addEventListener("click", function(){
 
 
 
-
-
 // 회원 가입 form태그가 제출 되었을 때
 document.getElementById("signUpFrm").addEventListener("submit", e=>{
 

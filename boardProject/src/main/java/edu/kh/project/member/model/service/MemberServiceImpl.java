@@ -3,6 +3,7 @@ package edu.kh.project.member.model.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.kh.project.member.model.dao.MemberDAO;
 import edu.kh.project.member.model.dto.Member;
@@ -58,4 +59,22 @@ public class MemberServiceImpl implements MemberService{
 		
 		return loginMember;
 	}
+
+	
+	/** 회원가입 서비스
+	 *
+	 */
+	@Override
+	@Transactional
+	public int signUp(Member inputMember) {
+		
+		String pw = bcrypt.encode(inputMember.getMemberPw());
+		
+		inputMember.setMemberPw(pw);
+		
+		return dao.signUp(inputMember);
+	}
+
 }
+
+

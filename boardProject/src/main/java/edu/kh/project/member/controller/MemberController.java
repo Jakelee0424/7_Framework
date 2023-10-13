@@ -275,6 +275,59 @@ public class MemberController {
 		return "member/signUp";
 	}
 	
+	/** 회원가입
+	 * @param inputMember
+	 * @param memberAddress
+	 * @param ra
+	 * @return
+	 */
+	@PostMapping("/signUp")
+	public String signUp(Member inputMember,
+						 String[] memberAddress,
+						 RedirectAttributes ra
+
+						 // Member inputMember = 커맨드 객체 (@ModelAttribute 생략)
+						 // String[] memberAddress : input name = "memberAddress" 3개가 저장된 객체
+						 // RedirectAttributes ra : 리다이렉트 시 데이터를 request-scope로 전달하는 객체
+			) {
+		
+		if(inputMember.getMemberAddress().equals(",,")) {
+			inputMember.setMemberAddress(null);
+		
+		} else {
+			
+			// String.join("구분자", String[])
+			String addr = String.join("^^^", memberAddress);		
+			inputMember.setMemberAddress(addr);
+			
+		}
+		
+		int result = service.signUp(inputMember);
+		
+		// 가입 성공 여부에 따라 주소 결정
+		
+		String path = "redirect:";
+		String msg = null;
+		
+		if(result > 0) {
+			
+			path += "/"; // 가입 성공시 메인 페이지로 이동
+			msg = inputMember.getMemberNickname() + "님의 가입을 환영합니다!";
+			
+		}else {
+			
+//			path += "/member/signUp"; //절대경로
+			path += "signUp"; // 상대경로
+			
+			msg = "회원가입 실패";
+			
+		}
+		
+		ra.addFlashAttribute("msg", msg);
+		
+		return path;
+	}
+	
 	
 	/*
 	 * 스프링의 예외 처리방법 (3종류, 중복 사용 가능)
