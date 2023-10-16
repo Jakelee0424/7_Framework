@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <link rel="stylesheet" href="/resources/css/main-style.css" type="text/css">
 	
@@ -41,11 +42,22 @@
 
 	<nav>
 		<ul>
-			<li><a href="#">공지사항</a></li>
-			<li><a href="#">자유게시판</a></li>
-			<li><a href="#">질문게시판</a></li>
-			<li><a href="#">FAQ</a></li>
-			<li><a href="#">1:1문의</a></li>
+		
+		<%-- 인터셉터를 이용해 조회된 boardTypeList를 화면에 출력 (from application scope) --%>
+			<c:forEach var="boardType" items="${boardTypeList}">
+			<li>
+				<a href="/board/${boardType.BOARD_CODE}">${boardType.BOARD_NAME}</a>
+			</li>
+			</c:forEach>		
+		
+		
+			<%-- 
+			<li><a href="#">${}</a></li>
+			<li><a href="/board/boardList"></a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+			--%>
 		</ul>
 	</nav>
 

@@ -43,4 +43,17 @@
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 
+	<!-- 게시판 인터셉터 관련 부분 -->
+	<interceptors>
+	
+		<interceptor>
+		
+			<!-- 인터셉터가 동작할 url 지정 -->
+			<mapping path="/**" /> <!-- *한개 인식 못하기도 함 -->
+			<beans:bean id="BoardTypeInterceptor" class="edu.kh.project.common.interceptor.BoardTypeInterceptor" />
+			
+		</interceptor>
+		
+	</interceptors>
+
 </beans:beans>

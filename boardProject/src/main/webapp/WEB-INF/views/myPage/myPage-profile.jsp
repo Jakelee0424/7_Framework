@@ -35,7 +35,7 @@
 
 
                         <%--
-                            파일 제출은 무조건 POSt 방식
+                            파일 제출은 무조건 POST 방식
                             - enctype : form 태그 데이터가 서버로 제출 될 때 인코딩 되는 방법 지정(post일때만 가능)
                             - application/x-www-form-urlencoded : 모든 문자를 서버로 전송하기 전에 인코딩(form태그 기본값)
                             - multipart/form-data : 모든 문자를 인코딩하지 않음 (원본 데이터가 유지되어 이미지, 파일 등을 서버로 전송할 수 있음 )
