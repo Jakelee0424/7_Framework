@@ -2,6 +2,7 @@ package edu.kh.project.common;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,6 +18,8 @@ public class ExceptionController {
 
 		model.addAttribute("e", "SQLExceoption 발생"); 
 		
+		System.out.println(e);
+		
 		return "common/error";
 	}
 
@@ -25,6 +28,8 @@ public class ExceptionController {
 
 		model.addAttribute("e", "IOExceoption 발생"); 
 	 	
+		System.out.println(e);
+		
 		return "common/error";
 	}
 
@@ -33,16 +38,33 @@ public class ExceptionController {
 
 		model.addAttribute("e", "NullPointerException 발생"); 
 		 	
+		System.out.println(e);
+		
+		return "common/error";
+	}
+	
+	@ExceptionHandler(ParseException.class)
+	public String exceptionHandler4(ParseException e, Model model) {
+
+		model.addAttribute("e", "ParseException 발생"); 
+		
+		System.out.println(e);
+		
 		return "common/error";
 	}
 	
 	@ExceptionHandler(Exception.class)
-	public String exceptionHandler4(Exception e, Model model) {
+	public String exceptionHandler5(Exception e, Model model) {
 
 		model.addAttribute("e", "Exception 발생"); 
-		 	
+		
+		System.out.println(e);
+		
 		return "common/error";
 	}
+	
+	
+	
 	
 
 }

@@ -110,3 +110,7 @@
     resize: none;
     margin-top : 20px;
 }
+
+.comment-content{
+	white-space : pre-wrap;
+}

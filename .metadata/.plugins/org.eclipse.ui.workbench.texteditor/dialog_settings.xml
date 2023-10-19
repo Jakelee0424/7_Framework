@@ -6,8 +6,15 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="파일"/>
+		<item key="selection" value="board"/>
 		<list key="findhistory">
+			<item value="board-like"/>
+			<item value="board"/>
+			<item value="board-btn"/>
+			<item value="comment-content"/>
+			<item value="board-con"/>
+			<item value="이메일"/>
+			<item value="email"/>
 			<item value="파일"/>
 			<item value="foot"/>
 			<item value="r"/>

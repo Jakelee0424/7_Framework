@@ -3,10 +3,14 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
 
 <c:forEach items="${boardTypeList}" var="boardType">
+
     <c:if test="${boardType.BOARD_CODE == boardCode}" >
         <c:set var="boardName" value="${boardType.BOARD_NAME}"/>
     </c:if>
+    
 </c:forEach>
+
+<c:set var="board" value="${board}" />
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -27,22 +31,44 @@
 
         <section class="board-detail">  
             <!-- 제목 -->
-            <h1 class="board-title">제목  <span> - ${boardName}</span>    </h1>
+            <h1 class="board-title">${board.boardTitle}  <span> - ${boardName}</span>    </h1>
 
             <!-- 프로필 + 닉네임 + 작성일 + 조회수 -->
             <div class="board-header">
                 <div class="board-writer">
 
                     <!-- 프로필 이미지 -->
-                    <img src="/resources/images/user.png">
+                    
+                    <c:choose>
+                    	
+                    	<c:when test="${empty board.profileImage}" >
+	                    	<img src="/resources/images/user.png">
+                    	</c:when>
+						
+						<c:otherwise>
+							<img src="${board.profileImage}">
+						</c:otherwise>
+                    
+                    </c:choose>
+                    
 
-                    <span>닉네임</span>
+                    <span>${board.memberNickname}</span>
 
                     
                     <!-- 좋아요 하트 -->
                     <span class="like-area">
-                        <i class="fa-regular fa-heart" id="boardLike"></i>
-                        <%-- <i class="fa-solid fa-heart" id="boardLike"></i> --%>
+                    
+					<c:choose>
+                    	
+                    	<c:when test="${result == 0}" >
+	                        <i class="fa-regular fa-heart" id="boardLike"></i>
+                    	</c:when>
+						
+						<c:otherwise>
+							<i class="fa-solid fa-heart" id="boardLike"></i>
+						</c:otherwise>
+                    
+                    </c:choose>        
 
                         <span>${board.likeCount}</span>
                     </span>
@@ -50,78 +76,97 @@
                 </div>
 
                 <div class="board-info">
-                    <p> <span>작성일</span> 2023년 05월 09일 10:33:21 </p>     
+                    <p> <span>작성일</span> ${board.boardCreateDate} </p>     
 
                     <!-- 수정한 게시글인 경우 -->
-                    <p> <span>마지막 수정일</span>   2023년 05월 09일 11:48:50 </p>   
+                    
+                    <c:if test="${not empty board.boardUpdateDate}">
+                    	<p> <span>마지막 수정일</span> ${board.boardUpdateDate} </p>   
+                    </c:if>
 
-                    <p> <span>조회수</span>  10 </p>                    
+                    <p> <span>조회수</span> ${board.readCount} </p>                    
                 </div>
             </div>
 
-            <!-- 이미지가 있을 경우 -->
+            <%-- 이미지가 있을 경우 --%>
                 
+                <c:if test="${not empty board.imageList}">
+            <%-- 썸네일 영역(썸네일이 있을 경우) --%>
+		            
+		            <c:if test="${board.imageList[0].imageOrder == 0}">
+		            
+			            <h5>썸네일</h5>
+			            <div class="img-box">
+			                <div class="boardImg thumbnail">
+			                    <img src="${board.imageList[0].imagePath}${board.imageList[0].imageReName}">
+			                    <a href="${board.imageList[0].imagePath}${board.imageList[0].imageReName}" 
+			                    download="${board.imageList[0].imageOriginal}">다운로드</a>         
+			                </div>
+			            </div>
 
-            <!-- 썸네일 영역(썸네일이 있을 경우) -->
-            <h5>썸네일</h5>
-            <div class="img-box">
-                <div class="boardImg thumbnail">
-                    <img src="https://via.placeholder.com/270x270">
-                    <a href="#"">다운로드</a>         
-                </div>
-            </div>
+		            </c:if>
+                
+                </c:if>
 
 
-            <!-- 업로드 이미지가 있는 경우 -->
 
-            <!-- 업로드 이미지 영역 -->
+			<c:if test="${board.imageList[0].imageOrder == 0}">
+				<c:set var="start" value="1" />
+			</c:if>
+			
+			<c:if test="${board.imageList[0].imageOrder != 0}">
+				<c:set var="start" value="0" />
+			</c:if>
+			
+
+            <%-- 업로드 이미지가 있는 경우 --%>
+
+            <%-- 업로드 이미지 영역 --%>
+            
+            
+            <%--fn:length : 길이 반환 --%>
+            <c:if test="${fn:length(board.imageList) > start}">
+
             <h5>업로드 이미지</h5>
-            <div class="img-box">
-                
-                <div class="boardImg">
-                    <img src="https://via.placeholder.com/215x215">
-                    <a href="#">다운로드</a>                
-                </div>
 
-                <div class="boardImg">
-                    <img src="https://via.placeholder.com/215x215">
-                    <a href="#">다운로드</a>                
-                </div>
+            	<c:forEach begin="${start}" var="i" end="${fn:length(board.imageList) -1 }">
+            		
+            		<div class="img-box">
+		                
+		                <div class="boardImg">
+		                
+		                	<c:set var="path" value="${board.imageList[i].imagePath}${board.imageList[i].imageReName}" />
+		                
+		                    <img src="${path}">
+		                    <a href="${path}" download="${board.imageList[i].imageOriginal}">다운로드</a>                
+		                </div>
+		
+		            </div>
+	            
+	            </c:forEach>
+	            
+            	
+            
+  
+			</c:if>
 
-                <div class="boardImg">
-                    <img src="https://via.placeholder.com/215x215">
-                    <a href="#">다운로드</a>                
-                </div>
-                
-                <div class="boardImg">
-                    <img src="https://via.placeholder.com/215x215">
-                    <a href="#">다운로드</a>                
-                </div>
-
-            </div>
-
-
-            <!-- 내용 -->
-            <div class="board-content">내용입니다
-white-space: pre-wrap;
-줄바꿈
-띄    어   쓰   기
-유지
-됩니다
-하하하
-</div>
+            <%-- 내용 --%>
+            <div class="board-content"> ${board.boardContent}</div>
 
 
-            <!-- 버튼 영역-->
-            <div class="board-btn-area">
-
-                <!-- 로그인한 회원과 게시글 작성자 번호가 같은 경우-->
-                <button id="updateBtn">수정</button>
-                <button id="deleteBtn">삭제</button>
-
-
-                <button id="goToListBtn">목록으로</button>
-            </div>
+            <%-- 버튼 영역--%>
+	            <div class="board-btn-area">
+            
+	           		 <c:if test="${loginMember.memberNo == board.memberNo}">
+	
+	                <!-- 로그인한 회원과 게시글 작성자 번호가 같은 경우-->
+	                <button id="updateBtn">수정</button>
+	                <button id="deleteBtn">삭제</button>
+	
+            		</c:if>
+	
+	                <button id="goToListBtn">목록으로</button>
+	            </div>
 
 
         </section>
@@ -132,6 +177,15 @@ white-space: pre-wrap;
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 
+    <script>
+         // JSP 해석 우선 순위 : Java / EL / JSTL  --> HTML,CSS,JS
+
+         const boardNo = "${board.boardNo}" 
+         const loginMemberNo = "${loginMember.memberNo}" // -> JS에서 사용 가능
+                                                         // null 이면 ""로 반환
+    </script>
+
+    <script src="/resources/js/board/boardDetail.js"></script>
 
 </body>
 </html>

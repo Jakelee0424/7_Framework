@@ -399,5 +399,3 @@ function insertChildComment(parentNo, btn){
 
 
 }
-
-

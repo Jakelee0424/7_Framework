@@ -6,7 +6,6 @@
 <%-- map에 저장된 값을을 각각 변수에 저장--%>
 <c:set var="pagination" value="${map.pagination}" />
 <c:set var="boardList" value="${map.boardList}" />
-
 <c:set var="boardName" value="${boardTypeList[boardCode-1].BOARD_NAME}" />
 
 <!DOCTYPE html>
@@ -68,8 +67,7 @@
 										<td>${board.boardNo}</td>
 										<td><c:if test="${not empty board.thumbnail}">
 												<img class="list-thumbnail" src="${board.thumbnail}">
-											</c:if> <a
-											href="/board/${boardCode}/${board.boardNo}?cp=${pagiantion.currentPage}">${board.boardTitle}</a>
+											</c:if> <a	href="/board/${boardCode}/${board.boardNo}?cp=${pagiantion.currentPage}">${board.boardTitle}</a>
 											[${board.commentCount}]</td>
 										<td>${board.memberNickname}</td>
 										<td>${board.boardCreateDate}</td>
