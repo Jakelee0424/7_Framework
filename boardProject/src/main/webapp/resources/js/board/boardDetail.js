@@ -60,3 +60,29 @@ boardLike.addEventListener("click", e => {
 
 });
 
+document.getElementById("updateBtn").addEventListener("click", () => {
+
+    location.href = location.pathname.replace("board","board2") + "/update" + location.search
+
+    // location.replace : 내용 바꿈
+    // location.search : 쿼리스트링 가져옴 -> ?cp=1
+
+
+})
+
+document.getElementById("deleteBtn").addEventListener("click", () => {
+
+    location.href = location.pathname.replace("board","board2") + "/delete"
+
+    // location.replace : 내용 바꿈
+    // location.search : 쿼리스트링 가져옴 -> ?cp=1
+
+
+})
+
+document.getElementById("goToListBtn").addEventListener("click", () => {
+
+    history.back();
+
+
+})

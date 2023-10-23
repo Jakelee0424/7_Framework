@@ -179,7 +179,7 @@
 
     <script>
          // JSP 해석 우선 순위 : Java / EL / JSTL  --> HTML,CSS,JS
-
+         const boardType = "${boar.boardType}"
          const boardNo = "${board.boardNo}" 
          const loginMemberNo = "${loginMember.memberNo}" // -> JS에서 사용 가능
                                                          // null 이면 ""로 반환

@@ -75,7 +75,6 @@ public class BoardDAO {
 
 		return sqlSession.selectOne("boardMapper.selectLike", map);
 	}
-
 	
 	/** 조회수 증가 DAO
 	 * @param boardNo

@@ -53,8 +53,18 @@ public class ExceptionController {
 		return "common/error";
 	}
 	
-	@ExceptionHandler(Exception.class)
+	@ExceptionHandler(IllegalStateException.class)
 	public String exceptionHandler5(Exception e, Model model) {
+
+		model.addAttribute("e", "IllegalStateException 발생"); 
+		
+		System.out.println(e);
+		
+		return "common/error";
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public String exceptionHandler6(Exception e, Model model) {
 
 		model.addAttribute("e", "Exception 발생"); 
 		

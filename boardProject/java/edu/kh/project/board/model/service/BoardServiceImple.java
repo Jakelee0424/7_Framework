@@ -71,7 +71,6 @@ public class BoardServiceImple implements BoardService {
 		return dao.selectLike(map);
 	}
 
-	
 	/** 조회 수 증가 서비스
 	 *
 	 */
@@ -81,7 +80,6 @@ public class BoardServiceImple implements BoardService {
 
 		return dao.updateReadCount(boardNo);
 	}
-
 	
 	/** 좋아요 처리 서비스
 	 *
