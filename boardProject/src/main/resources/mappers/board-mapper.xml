@@ -140,13 +140,17 @@
 	</select>
 
 	<select id="selectCommentList" resultMap="comment_rm">
-		SELECT COMMENT_NO, COMMENT_CONTENT,
-		TO_CHAR(C_CREATE_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') C_CREATE_DATE,
-		BOARD_NO, MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, PARENT_NO, COMMENT_DEL_FL
-		FROM "COMMENT"
-		JOIN MEMBER USING(MEMBER_NO)
-		WHERE BOARD_NO = #{boardNo}
-		ORDER BY COMMENT_NO
+		SELECT C.* FROM
+			(SELECT COMMENT_NO, COMMENT_CONTENT,
+			TO_CHAR(C_CREATE_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') C_CREATE_DATE,
+			BOARD_NO, MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, PARENT_NO, COMMENT_DEL_FL
+			FROM "COMMENT"
+			JOIN MEMBER USING(MEMBER_NO)
+			WHERE BOARD_NO = #{boardNo}) C
+		WHERE COMMENT_DEL_FL = 'N'
+		START WITH PARENT_NO IS NULL
+		CONNECT BY PRIOR COMMENT_NO = PARENT_NO
+		ORDER SIBLINGS BY COMMENT_NO
 	</select>
 
 	<select id="selectLike" resultType="_int">
@@ -264,6 +268,21 @@
 		AND BOARD_CODE = #{boardCode}
 	</update>
 	
-
+	<update id="deleteComment">
+		UPDATE "COMMENT" SET
+		COMMENT_DEL_FL = 'Y'
+		WHERE COMMENT_NO = #{commentNo}
+	</update>
+	
+	<insert id="insertComment">
+		INSERT INTO "COMMENT"
+		VALUES(SEQ_COMMENT_NO.NEXTVAL, #{comment}, DEFAULT, DEFAULT, #{boardNo}, #{memberNo}, NULL)
+	</insert>
+	
+	<update id="updateComment">
+		UPDATE "COMMENT" SET
+		COMMENT_CONTENT = #{commentContent}
+		WHERE COMMENT_NO = #{commentNo}
+	</update>
 
 </mapper>

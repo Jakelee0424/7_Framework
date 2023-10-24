@@ -1,8 +1,17 @@
 // 댓글 목록 조회
 function selectCommentList(){
     
-    fetch()
-    .then()
+    // REST(REpresentational State Transfer) API
+    // - 자원을 이름(주소)으로 구분하여 자원의 상태를 주고 받는 것
+
+    // 주소를 명시
+    // Http method (GET, POST, PUT, DELETE) 등을 이용해 
+    // 지정된 자원에 CRUD
+    
+
+
+    fetch("/comment?boardNo=" + boardNo)
+    .then(response => response.json())
     .then(cList => {
         console.log(cList);
 
@@ -108,7 +117,8 @@ function selectCommentList(){
     })
     .catch(err => console.log(err));
 
-}
+};
+
 
 
 //-------------------------------------------------------------------------------------------------
@@ -136,8 +146,8 @@ addComment.addEventListener("click", e => { // 댓글 등록 버튼이 클릭이
     }
 
     // 3) AJAX를 이용해서 댓글 내용 DB에 저장(INSERT)
-    fetch()
-    .then()
+    fetch("/insert?comment="+commentContent.value +"&boardNo="+boardNo)
+    .then(response => response.text())
     .then(result => {
         if(result > 0){ // 등록 성공
             alert("댓글이 등록되었습니다.");
@@ -157,12 +167,15 @@ addComment.addEventListener("click", e => { // 댓글 등록 버튼이 클릭이
 
 // -----------------------------------------------------------------------------------
 // 댓글 삭제
+
 function deleteComment(commentNo){
+
+    console.log(commentNo)
 
     if( confirm("정말로 삭제 하시겠습니까?") ){
 
-        fetch()
-        .then()
+        fetch("/delete?commentNo="+ commentNo)
+        .then(response => response.text())
         .then(result => {
             if(result > 0){
                 alert("삭제되었습니다");
@@ -175,6 +188,7 @@ function deleteComment(commentNo){
 
     }
 }
+
 
 
 
@@ -284,8 +298,8 @@ function updateComment(commentNo, btn){
     // 새로 작성된 댓글 내용 얻어오기
     const commentContent = btn.parentElement.previousElementSibling.value;
 
-    fetch()
-    .then()
+    fetch("/update?commentContent="+ commentContent + "&commentNo="+commentNo)
+    .then(response => response.text())
     .then(result => {
         if(result > 0){
             alert("댓글이 수정되었습니다.");

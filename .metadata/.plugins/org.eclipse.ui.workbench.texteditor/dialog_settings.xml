@@ -6,8 +6,12 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="imageRename"/>
+		<item key="selection" value="COMMENT"/>
 		<list key="findhistory">
+			<item value="comment"/>
+			<item value="commnet"/>
+			<item value="del"/>
+			<item value="dle"/>
 			<item value="imageRename"/>
 			<item value="imageRe"/>
 			<item value="board-like"/>
@@ -19,16 +23,12 @@
 			<item value="email"/>
 			<item value="파일"/>
 			<item value="foot"/>
-			<item value="r"/>
-			<item value="main"/>
-			<item value="memberMapper"/>
-			<item value="--"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="1426"/>
+		<item key="DIALOG_X_ORIGIN" value="1398"/>
 		<item key="DIALOG_Y_ORIGIN" value="215"/>
 		<item key="DIALOG_WIDTH" value="288"/>
 		<item key="DIALOG_HEIGHT" value="391"/>

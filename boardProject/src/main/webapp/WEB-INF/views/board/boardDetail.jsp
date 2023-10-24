@@ -183,9 +183,11 @@
          const boardNo = "${board.boardNo}" 
          const loginMemberNo = "${loginMember.memberNo}" // -> JS에서 사용 가능
                                                          // null 이면 ""로 반환
+        
     </script>
 
     <script src="/resources/js/board/boardDetail.js"></script>
+    <script src="/resources/js/board/comment.js"></script>
 
 </body>
 </html>
