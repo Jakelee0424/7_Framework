@@ -396,10 +396,17 @@ function insertChildComment(parentNo, btn){
         return;
     }
 
+    const data = {"commentContent" : commentContent,
+                  "memberNo" : loginMemberNo,
+                  "boardNo" : boardNo,
+                  "parentNo" : parentNo};
 
-
-    fetch()
-    .then()
+    fetch("/comment",{
+        method : "post",  // 방식
+        headers : {"Content-Type" : "application/json"}, 
+        body : JSON.stringify(data)
+    })
+    .then(response => response.text())
     .then(result => {
         if(result > 0){ // 등록 성공
             alert("답글이 등록되었습니다.");

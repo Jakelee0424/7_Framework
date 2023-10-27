@@ -35,6 +35,11 @@ public class CommentDAO {
 		return sqlSession.update("boardMapper.updateComment",map);
 	}
 
+	public int insertComment(Comment comment) {
+		
+		return sqlSession.insert("boardMapper.insert", comment);
+	}
+
 
 
 }

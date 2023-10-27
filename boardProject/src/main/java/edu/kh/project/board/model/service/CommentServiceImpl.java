@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.kh.project.board.model.dao.CommentDAO;
 import edu.kh.project.board.model.dto.Comment;
@@ -29,6 +30,7 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public int insert(Map<String, Object> map) {
 
 		return dao.insert(map);
@@ -38,6 +40,12 @@ public class CommentServiceImpl implements CommentService{
 	public int update(Map<String, Object> map) {
 
 		return dao.update(map);
+	}
+
+	@Override
+	public int insertComment(Comment comment) {
+
+		return dao.insertComment(comment);
 	}
 
 

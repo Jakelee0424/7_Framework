@@ -37,7 +37,7 @@
 	
 	
 	                <div class="comment-btn-area">
-	                    <button>답글</button>   
+	                    <button onclick="showInsertComment(`${comment.commentNo}`, this)">답글</button>   
 	                   	
 	                   	<c:if test="${loginMember.memberNo == comment.memberNo}">
 	                    	<button onclick="showUpdateComment('${comment.commentNo}', this)">수정</button>     

@@ -58,6 +58,10 @@
 			<li><a href="#"></a></li>
 			<li><a href="#"></a></li>
 			--%>
+			<%-- 로그인 했을 때 채팅 보여짐 --%>
+				   <c:if test="${not empty loginMember}" >
+					   <li><a href="/chatting">채팅</a></li>
+				   </c:if>
 		</ul>
 	</nav>
 

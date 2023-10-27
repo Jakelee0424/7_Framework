@@ -15,4 +15,6 @@ public interface CommentService {
 
 	int update(Map<String, Object> map);
 
+	int insertComment(Comment comment);
+
 }

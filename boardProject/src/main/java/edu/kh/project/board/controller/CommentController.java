@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -30,6 +32,12 @@ public class CommentController {
 	public List<Comment> select(int boardNo) {
 		
 		return service.select(boardNo); 		
+	}
+	
+	@PostMapping(value="comment")
+	public int insert(@RequestBody Comment comment) {
+		
+		return service.insertComment(comment); 		
 	}
 	
 	@GetMapping(value="insert")

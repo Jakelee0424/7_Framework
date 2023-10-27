@@ -8,6 +8,8 @@
 <c:set var="boardList" value="${map.boardList}" />
 <c:set var="boardName" value="${boardTypeList[boardCode-1].BOARD_NAME}" />
 
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -23,12 +25,18 @@
 	<main>
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
+		<c:if test="${not empty param.key}">
+			<c:set var="kq" value="&key=${param.key}&query=${param.query}" />
+		</c:if>
 
 		<section class="board-list">
 
 			<h1 class="board-name">${boardName}</h1>
 
-
+			<c:if test="${not empty param.key}">
+				<h3 style="magin:30px">"${param.query}"의 검색 결과</h3>
+			</c:if>
+			
 			<div class="list-wrapper">
 				<table class="list-table">
 
@@ -105,10 +113,10 @@
 				<ul class="pagination">
 
 					<!-- 첫 페이지로 이동 -->
-					<li><a href="/board/${boardCode}?cp=1">&lt;&lt;</a></li>
+					<li><a href="/board/${boardCode}?cp=1${kq}">&lt;&lt;</a></li>
 
 					<!-- 이전 목록 마지막 번호로 이동 -->
-					<li><a href="/board/${boardCode}?cp=${pagination.prevPage}">&lt;</a></li>
+					<li><a href="/board/${boardCode}?cp=${pagination.prevPage}${kq}">&lt;</a></li>
 
 
 					<!-- 특정 페이지로 이동 -->
@@ -120,7 +128,7 @@
 							</c:when>
 							
 							<c:otherwise>
-								<li><a href="/board/${boardCode}?cp=${i}">${i}</a></li>
+								<li><a href="/board/${boardCode}?cp=${i}${kq}">${i}</a></li>
 							</c:otherwise>
 						
 						</c:choose>
@@ -132,17 +140,17 @@
 
 		
 					<!-- 다음 목록 시작 번호로 이동 -->
-					<li><a href="/board/${boardCode}?cp=${pagination.nextPage}">&gt;</a></li>
+					<li><a href="/board/${boardCode}?cp=${pagination.nextPage}${kq}">&gt;</a></li>
 
 					<!-- 끝 페이지로 이동 -->
-					<li><a href="/board/${boardCode}?cp=${pagination.maxPage}">&gt;&gt;</a></li>
+					<li><a href="/board/${boardCode}?cp=${pagination.maxPage}${kq}">&gt;&gt;</a></li>
 
 				</ul>
 			</div>
 
 
 			<!-- 검색창 -->
-			<form action="#" method="get" id="boardSearch">
+			<form action="${boardCode}" method="get" id="boardSearch">
 
 				<select name="key" id="searchKey">
 					<option value="t">제목</option>
