@@ -6,8 +6,9 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="COMMENT"/>
+		<item key="selection" value="Log"/>
 		<list key="findhistory">
+			<item value="log"/>
 			<item value="comment"/>
 			<item value="commnet"/>
 			<item value="del"/>
@@ -22,7 +23,6 @@
 			<item value="이메일"/>
 			<item value="email"/>
 			<item value="파일"/>
-			<item value="foot"/>
 		</list>
 		<list key="replacehistory">
 		</list>

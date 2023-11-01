@@ -379,5 +379,10 @@
 		COMMENT_CONTENT = #{commentContent}
 		WHERE COMMENT_NO = #{commentNo}
 	</update>
+	
+	<select id="selectImageListAll" resultType="string">
+		SELECT IMG_RENAME
+		FROM BOARD_IMG	
+	</select>
 
 </mapper>
