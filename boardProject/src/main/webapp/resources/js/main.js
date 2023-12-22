@@ -125,29 +125,40 @@ btn2.addEventListener("click", () => {
 // 1. sockJS 라이브러리 추가 (CDN으로 jsp에 추가)
 
 // 2. sockJS를 이용하여 클라이언트용 웹소켓 객체 생성
-let testSock = new SockJS("/testSock");
+// let testSock = new SockJS("/testSock");
 
-function sendMessage(name, str) {
+// function sendMessage(name, str) {
 
-    // 매개변수를 JS 객체에 저장
-    let obj = {}; // 비어있는 객체
+//     // 매개변수를 JS 객체에 저장
+//     let obj = {}; // 비어있는 객체
 
-    obj.name = name; // 객체에 일치하는 키가 없으면 자동 추가
-    obj.str = str;
+//     obj.name = name; // 객체에 일치하는 키가 없으면 자동 추가
+//     obj.str = str;
 
-    console.log(obj);
+//     console.log(obj);
 
-    testSock.send(JSON.stringify(obj)); // JS객체 -> JSON 변환 -> send;
+//     testSock.send(JSON.stringify(obj)); // JS객체 -> JSON 변환 -> send;
+
+// }
+
+// // 3. 웹소켓 객체(testSock)가 서버로부터 전달받은 메세지가 있는 경우
+// testSock.onmessage = e => {
+
+//     // e.data : 전달받은 객체
+
+//     obj = JSON.parse(e.data) // JSON객체 -> JS객체
+
+//     console.log(`보낸사람 : ${obj.name}  /  내용 : ${obj.str}`);
+// }
+
+
+//----------------------------------------------------------------------------------
+// 자바스크립트로 쿠키 얻어오기
+
+function getcookie(key){  
+
+    const cookies = document.cookie;
+
+    console.log(cookies)
 
 }
-
-// 3. 웹소켓 객체(testSock)가 서버로부터 전달받은 메세지가 있는 경우
-testSock.onmessage = e => {
-
-    // e.data : 전달받은 객체
-
-    obj = JSON.parse(e.data) // JSON객체 -> JS객체
-
-    console.log(`보낸사람 : ${obj.name}  /  내용 : ${obj.str}`);
-}
-
